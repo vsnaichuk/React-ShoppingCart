@@ -1,23 +1,12 @@
-export type CartItemType = {
-  id: number;
-  category: string;
-  description: string;
-  image: string;
-  price: number;
-  title: string;
-  amount: number;
-};
+import {EndPoints} from './EndPoints'
+import {ProductType} from '../App.types'
 
-export const getCartItems = (): Promise<CartItemType[]> => {
-  return fetch(EndPoints.CART_ITEMS).then(res =>
-    res.json()
-  );
-};
+export const getProducts = async (): Promise<ProductType[]> =>
+  await (await fetch(EndPoints.PRODUCTS)).json()
 
-export const setCartItems = (cartItem: CartItemType): Promise<CartItemType> => {
-  return fetch(EndPoints.CART_ITEMS, {
+export const addProduct = async (product: ProductType): Promise<ProductType> =>
+  await (await fetch(EndPoints.PRODUCTS, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...cartItem })
-  }).then(res => res.json());
-};
+    body: JSON.stringify({ ...product })
+  })).json()
